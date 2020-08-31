@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -18,15 +19,18 @@ public class TitleMenu extends BorderPane {
 
     StackPane _title;
     int _winning = 0;
+    Color _color;
 
-    public TitleMenu(Stage stage){
+    public TitleMenu(Stage stage, Color color){
+        _color = color;
+
         //Initialise title
         setTitle();
 
         //Initialise vbox which includes three buttons
         VBox vbox = new VBox(10);
         vbox.setPrefWidth(100);
-        this.setBackground(new Background(new BackgroundFill(Color.color(0.43,0.39,0.39), CornerRadii.EMPTY, Insets.EMPTY)));
+        this.setBackground(new Background(new BackgroundFill(_color, CornerRadii.EMPTY, Insets.EMPTY)));
 
         //Initialise required buttons
         Button printBoard = new Button("Print question board");
@@ -45,6 +49,15 @@ public class TitleMenu extends BorderPane {
         Text t = new Text("Current winning: " + _winning);
 
         //Add functionality to the buttons
+
+        printBoard.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                BorderPane qb = new QuestionBoardMenu(stage, _color);
+                Scene scene = new Scene(qb, 800, 600);
+                stage.setScene(scene);
+            }
+        });
 
         quit.setOnAction(new EventHandler<ActionEvent>() {
             @Override

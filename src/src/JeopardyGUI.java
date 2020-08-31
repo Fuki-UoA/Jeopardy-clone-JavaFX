@@ -17,7 +17,7 @@ public class JeopardyGUI extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Jeopardy");
 
-        BorderPane pane = new TitleMenu(primaryStage);
+        BorderPane pane = new TitleMenu(primaryStage, Color.color(0.43,0.39,0.39));
 
         Scene scene = new Scene(pane, 800, 600);
         primaryStage.setScene(scene);
