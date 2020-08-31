@@ -2,11 +2,10 @@ package src;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.control.Button;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -18,10 +17,9 @@ public class JeopardyGUI extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Jeopardy");
 
-        BorderPane pane = new BorderPane();
-        pane.setBackground(new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        Scene scene = new Scene(pane, 1000, 800);
+        BorderPane pane = new TitleMenu();
 
+        Scene scene = new Scene(pane, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
