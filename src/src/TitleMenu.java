@@ -1,10 +1,14 @@
 package src;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * This class is a border pane for title menu
@@ -12,11 +16,17 @@ import javafx.scene.paint.Color;
  */
 public class TitleMenu extends BorderPane {
 
-    public TitleMenu(){
+    StackPane _title;
+    int _winning = 0;
+
+    public TitleMenu(Stage stage){
+        //Initialise title
+        setTitle();
+
         //Initialise vbox which includes three buttons
         VBox vbox = new VBox(10);
         vbox.setPrefWidth(100);
-        this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        this.setBackground(new Background(new BackgroundFill(Color.color(0.43,0.39,0.39), CornerRadii.EMPTY, Insets.EMPTY)));
 
         //Initialise required buttons
         Button printBoard = new Button("Print question board");
@@ -26,15 +36,44 @@ public class TitleMenu extends BorderPane {
         askQuestion.setMinWidth(vbox.getPrefWidth());
 
         Button reset = new Button("Reset");
+        reset.setPrefWidth(vbox.getPrefWidth());
 
         Button quit = new Button("Quit");
         quit.setMinWidth(vbox.getPrefWidth());
 
+        //Initialise text for current winning
+        Text t = new Text("Current winning: " + _winning);
+
+        //Add functionality to the buttons
+
+        quit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                stage.close();
+            }
+        });
+
         //Add the buttons to vbox.
-        vbox.getChildren().addAll(printBoard, askQuestion, quit);
+        vbox.getChildren().addAll(printBoard, askQuestion, reset, quit);
         vbox.setAlignment(Pos.CENTER);
 
-        //Set the vbox to pane.
+        //Create new StackPane
+        StackPane bottom = new StackPane();
+        bottom.setPrefHeight(20);
+        bottom.getChildren().add(t);
+
+        //Set nodes to this object.
         this.setCenter(vbox);
+        this.setTop(_title);
+        this.setBottom(bottom);
+    }
+
+    private void setTitle(){
+        _title = new StackPane();
+        _title.setPrefHeight(200);
+    }
+
+    public void setWinning(int winning){
+        _winning = winning;
     }
 }

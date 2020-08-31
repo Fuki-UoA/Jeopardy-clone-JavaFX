@@ -17,11 +17,12 @@ public class JeopardyGUI extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Jeopardy");
 
-        BorderPane pane = new TitleMenu();
+        BorderPane pane = new TitleMenu(primaryStage);
 
         Scene scene = new Scene(pane, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
     public static void main(String[] args) {
