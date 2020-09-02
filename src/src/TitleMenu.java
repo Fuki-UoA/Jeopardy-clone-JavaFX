@@ -8,8 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.io.InputStream;
 
 /**
  * This class is a border pane for title menu
@@ -21,12 +24,14 @@ public class TitleMenu extends BorderPane {
     private int _winning = 0;
     private Color _color;
     private Scene _rootScene;
+    private Text _titleFont = null;
 
     public TitleMenu(Stage stage, Color color){
         _color = color;
 
         //Initialise title
         setTitle();
+        setTitleFont();
 
         //Initialise vbox which includes three buttons
         VBox vbox = new VBox(10);
@@ -90,13 +95,31 @@ public class TitleMenu extends BorderPane {
 
         //Set nodes to this object.
         this.setCenter(vbox);
-        this.setTop(_title);
+        this.setTop(_titleFont);
+
+        BorderPane.setAlignment(_titleFont, Pos.TOP_CENTER);
+        BorderPane.setMargin(_titleFont, new Insets(50,0,0,0));
+
         this.setBottom(bottom);
     }
 
     private void setTitle(){
         _title = new StackPane();
         _title.setPrefHeight(200);
+    }
+
+    private void setTitleFont(){
+        if(_titleFont == null){
+            String fontFile = "../fonts/gyparody hv.ttf";
+            InputStream fontStream = TitleMenu.class.getResourceAsStream(fontFile);
+            Font font = null;
+            if(fontStream != null){
+                font = Font.loadFont(fontStream, 150);
+            }
+
+            _titleFont = new Text("Jeopardy");
+            _titleFont.setFont(font);
+        }
     }
 
     public void setWinning(int winning){
