@@ -12,6 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -110,14 +111,14 @@ public class TitleMenu extends BorderPane {
 
     private void setTitleFont(){
         if(_titleFont == null){
-            String fontFile = "../fonts/gyparody hv.ttf";
+            String fontFile = ".."+ File.separator + "fonts" + File.separator + "gyparody hv.ttf";
             InputStream fontStream = TitleMenu.class.getResourceAsStream(fontFile);
             Font font = null;
             if(fontStream != null){
                 font = Font.loadFont(fontStream, 150);
             }
 
-            _titleFont = new Text("Jeopardy");
+            _titleFont = new Text("Jeopardy!");
             _titleFont.setFont(font);
         }
     }
