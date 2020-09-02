@@ -12,8 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * This class is a border pane for title menu
@@ -39,6 +38,11 @@ public class TitleMenu extends BorderPane {
         vbox.setPrefWidth(100);
         this.setBackground(new Background(new BackgroundFill(_color, CornerRadii.EMPTY, Insets.EMPTY)));
 
+        try {
+            runScript();
+        } catch (IOException e) {
+        }
+
         //Initialise required buttons
         Button printBoard = new Button("Print question board");
         printBoard.setMinWidth(vbox.getPrefWidth());
@@ -56,7 +60,6 @@ public class TitleMenu extends BorderPane {
         Text t = new Text("Current winning: " + _winning);
 
         //Add functionality to the buttons
-
 
         printBoard.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -123,6 +126,19 @@ public class TitleMenu extends BorderPane {
         }
     }
 
+    private void runScript() throws IOException {
+        //Initialise logic script file
+        ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", "echo Welcome to Jeopardy! | festival --tts");
+
+        Process p = null;
+        try {
+            p = pb.start();
+        } catch (IOException e) {
+
+        }
+
+    }
+
     public void setWinning(int winning){
         _winning = winning;
     }
@@ -130,4 +146,5 @@ public class TitleMenu extends BorderPane {
     public void setRootScene(Scene rootScene){
         _rootScene = rootScene;
     }
+
 }
