@@ -8,11 +8,9 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class QuestionBoardMenu extends SubMenu{
+public class AskQuestionMenu extends SubMenu{
 
-    public QuestionBoardMenu(Stage stage, Color color){
+    public AskQuestionMenu(Stage stage, Color color) {
         super(stage, color);
-
     }
-
 }
