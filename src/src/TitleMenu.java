@@ -20,6 +20,7 @@ public class TitleMenu extends BorderPane {
     private StackPane _title;
     private int _winning = 0;
     private Color _color;
+    private Scene _rootScene;
 
     public TitleMenu(Stage stage, Color color){
         _color = color;
@@ -50,10 +51,12 @@ public class TitleMenu extends BorderPane {
 
         //Add functionality to the buttons
 
+
         printBoard.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                BorderPane qb = new QuestionBoardMenu(stage, _color);
+                SubMenu qb = new QuestionBoardMenu(stage, _color);
+                qb.setTitlemenu(_rootScene);
                 Scene scene = new Scene(qb, 800, 600);
                 stage.setScene(scene);
             }
@@ -62,7 +65,8 @@ public class TitleMenu extends BorderPane {
         askQuestion.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                BorderPane aq = new AskQuestionMenu(stage, _color);
+                SubMenu aq = new AskQuestionMenu(stage, _color);
+                aq.setTitlemenu(_rootScene);
                 Scene scene = new Scene(aq, 800, 600);
                 stage.setScene(scene);
             }
@@ -97,5 +101,9 @@ public class TitleMenu extends BorderPane {
 
     public void setWinning(int winning){
         _winning = winning;
+    }
+
+    public void setRootScene(Scene rootScene){
+        _rootScene = rootScene;
     }
 }
