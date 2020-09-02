@@ -17,9 +17,9 @@ import javafx.stage.Stage;
  */
 public class TitleMenu extends BorderPane {
 
-    StackPane _title;
-    int _winning = 0;
-    Color _color;
+    private StackPane _title;
+    private int _winning = 0;
+    private Color _color;
 
     public TitleMenu(Stage stage, Color color){
         _color = color;
@@ -55,6 +55,15 @@ public class TitleMenu extends BorderPane {
             public void handle(ActionEvent actionEvent) {
                 BorderPane qb = new QuestionBoardMenu(stage, _color);
                 Scene scene = new Scene(qb, 800, 600);
+                stage.setScene(scene);
+            }
+        });
+
+        askQuestion.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                BorderPane aq = new AskQuestionMenu(stage, _color);
+                Scene scene = new Scene(aq, 800, 600);
                 stage.setScene(scene);
             }
         });
