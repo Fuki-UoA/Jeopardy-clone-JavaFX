@@ -12,6 +12,7 @@ public class JeopardyLogic {
     private int _numOfCategories;
     private int[] _scores;
     private int _winning;
+    private String[] _categories;
     private String[][] _questions;
     private String[][] _answers;
     private Boolean[][] _isAnswered;
@@ -28,6 +29,7 @@ public class JeopardyLogic {
         _questions = new String[_numOfCategories][_numOfQuestions];
         _answers = new String[_numOfCategories][_numOfQuestions];
         _isAnswered = new Boolean[_numOfCategories][_numOfQuestions];
+
 
         //Fill isAnswered with false
         for(int i = 0; i < _numOfCategories; i++){
@@ -91,6 +93,10 @@ public class JeopardyLogic {
         return _numOfCategories;
     }
 
+    public String[] getCategories(){
+        return _categories;
+    }
+
     public boolean answer(int category, int question, String answer){
         boolean result;
         if(answer.equals(_answers[category][question])){
@@ -131,13 +137,21 @@ public class JeopardyLogic {
                 new ProcessBuilder("/bin/bash","-c", "ls src/categories | wc -l" );
 
         Process process = pb.start();
-        try {
-            process.waitFor();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String tmp = stdoutBuffered.readLine();
         _numOfCategories = Integer.parseInt(tmp);
+
+        pb = new ProcessBuilder("/bin/bash", "-c", "ls src/categories");
+        process = pb.start();
+        stdoutBuffered = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+        _categories = new String[_numOfCategories];
+        String line = null;
+        int i = 0;
+        while((line = stdoutBuffered.readLine()) != null){
+            _categories[i] = line;
+            i++;
+        }
     }
 }
