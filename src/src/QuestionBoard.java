@@ -2,9 +2,13 @@ package src;
 
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +37,7 @@ public class QuestionBoard extends GridPane {
 
         for(int i = 0; i < logic.numberOfCategories(); i++){
             for(int j = 0; j < _scores.length; j++){
-                    Button button = new Button(_scores[j]+"");
+                    Button button = new Button("$"+_scores[j]+"");
                     _buttons[i][j] = button;
 
                     button.setPrefHeight(500);
@@ -41,11 +45,26 @@ public class QuestionBoard extends GridPane {
                     GridPane.setFillWidth(button, true);
 
                     button.setStyle("-fx-border-color: black");
-                    this.add(button, i, j);
+                    this.add(button, i, j+1);
             }
             ColumnConstraints col = new ColumnConstraints();
             col.setPercentWidth(100/(double)logic.numberOfCategories());
             cols.add(col);
+        }
+
+        String[] categories = _logic.getCategories();
+        for(int i = 0; i < categories.length; i++){
+            Label text = new Label(categories[i]);
+
+            text.setPrefHeight(500);
+            text.setMaxWidth(Double.MAX_VALUE);
+            GridPane.setFillWidth(text, true);
+
+            text.setStyle("-fx-border-color: black");
+            text.getStylesheets().addAll(this.getStylesheets());
+            text.setContentDisplay(ContentDisplay.CENTER);
+            text.setAlignment(Pos.CENTER);
+            this.add(text, i, 0);
         }
 
         this.getColumnConstraints().addAll(cols);
