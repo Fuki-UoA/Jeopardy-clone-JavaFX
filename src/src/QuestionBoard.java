@@ -40,7 +40,7 @@ public class QuestionBoard extends GridPane {
                     button.setMaxWidth(Double.MAX_VALUE);
                     GridPane.setFillWidth(button, true);
 
-                    
+                    button.setStyle("-fx-border-color: black");
                     this.add(button, i, j);
             }
             ColumnConstraints col = new ColumnConstraints();
