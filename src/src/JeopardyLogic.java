@@ -29,27 +29,30 @@ public class JeopardyLogic {
         _isAnswered = new Boolean[_numOfCategories][_numOfQuestions];
 
         //Fill isAnswered with false
-        Arrays.fill(_isAnswered, false);
+        for(int i = 0; i < _numOfCategories; i++){
+            Arrays.fill(_isAnswered[i], false);
+        }
 
-        BufferedReader br = new BufferedReader(new FileReader(new File(".." + File.separator +"categories")));
+        BufferedReader br = new BufferedReader(new InputStreamReader(JeopardyLogic.class.getResourceAsStream(".." + File.separator +"categories")));
 
         int i = 0;
         int j = 0;
 
         String line;
         while ((line = br.readLine()) != null) {
-            BufferedReader in = new BufferedReader(new FileReader(new File(".." +
-                    File.separator +"categories" + File.separator + line)));
+            String dir = ".." + File.separator +"categories" + File.separator + line;
+            BufferedReader in = new BufferedReader(new InputStreamReader(JeopardyLogic.class.getResourceAsStream(dir)));
 
             while((line = in.readLine()) != null){
                 String[] aLine = line.split(",");
 
                 _scores[i] = Integer.parseInt(aLine[0]);
-                _questions[i][j] = aLine[1];
-                _answers[i][j] = aLine[2];
+                _questions[j][i] = aLine[1];
+                _answers[j][i] = aLine[2];
 
                 i++;
             }
+            i=0;
             j++;
         }
         
@@ -59,10 +62,10 @@ public class JeopardyLogic {
         String[][] result = new String[_numOfQuestions][_numOfCategories];
         for(int i = 0; i < _numOfQuestions; i++){
             for (int j = 0; j < _numOfCategories; j++){
-                if(_isAnswered[i][j] == true){
-                    _questions[i][j] = "Answered";
+                if(_isAnswered[j][i] == true){
+                    _questions[j][i] = "Answered";
                 } else {
-                    result[i][j] = _questions[i][j];
+                    result[j][i] = _questions[i][j];
                 }
             }
         }
@@ -80,7 +83,10 @@ public class JeopardyLogic {
 
     public void reset() {
         _winning = 0;
-        Arrays.fill(_isAnswered, false);
+
+        for(int i = 0; i < _numOfCategories; i++){
+            Arrays.fill(_isAnswered[i], false);
+        }
     }
 
     public boolean answer(int question, int category, String answer){
@@ -96,39 +102,30 @@ public class JeopardyLogic {
         return result;
     }
 
-    private int readFirstLine(ProcessBuilder p) throws IOException {
-        ProcessBuilder pb = p;
+    private void countQuestions() throws IOException {
+        ProcessBuilder pb =
+                new ProcessBuilder("/bin/bash", "-c", "ls src/categories/* | xargs cat | wc -l" );
 
         Process process = pb.start();
 
-        InputStream stdout = process.getInputStream();
-        BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
+        BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-        String line = stdoutBuffered.readLine();
-        return Integer.parseInt(line);
+        _numOfQuestions = Integer.parseInt(stdoutBuffered.readLine()) / _numOfCategories;
     }
 
-    private void countQuestions() {
+    private void countCategories() throws IOException {
         ProcessBuilder pb =
-                new ProcessBuilder("/bin/bash","-c", "ls | head -n1 | xargs cat | wc -l" );
-        pb.directory(new File("../categories"));
+                new ProcessBuilder("/bin/bash","-c", "ls src/categories | wc -l" );
 
+        Process process = pb.start();
         try {
-            _numOfQuestions = readFirstLine(pb);
-        } catch (IOException e) {
-
+            process.waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-    }
+        BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String tmp = stdoutBuffered.readLine();
+        _numOfCategories = Integer.parseInt(tmp);
 
-    private void countCategories(){
-        ProcessBuilder pb =
-                new ProcessBuilder("/bin/bash","-c", "ls | wc -l" );
-        pb.directory(new File("../categories"));
-
-        try {
-            _numOfCategories = readFirstLine(pb);
-        } catch (IOException e) {
-
-        }
     }
 }
