@@ -17,4 +17,16 @@ public class TestJeopardyLogic {
         assertEquals("Kiwi", answers);
     }
 
+    @Test
+    public void testCategories() throws IOException {
+        JeopardyLogic logic = new JeopardyLogic();
+        String[] cat = logic.getCategories();
+
+        String[] expected = new String[2];
+        expected[0] = "animals";
+        expected[1] = "countries";
+
+        assertEquals(expected, cat);
+    }
+
 }
