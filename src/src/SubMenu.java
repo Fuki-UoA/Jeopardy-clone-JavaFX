@@ -17,6 +17,7 @@ public class SubMenu extends BorderPane {
     protected Scene _titleMenu;
     protected JeopardyLogic _logic;
     protected List<Button> _buttons;
+    protected QuestionBoard _qb;
 
     public SubMenu(Stage stage, Color color){
         _color = color;
@@ -28,7 +29,6 @@ public class SubMenu extends BorderPane {
 
         _buttons.add(back);
 
-        styleButtons();
         //Add functionality to back
         back.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -49,9 +49,7 @@ public class SubMenu extends BorderPane {
         _logic = logic;
     }
 
-    private void styleButtons(){
-        for (Button button : _buttons){
-            button.setStyle("-fx-background-color: #A9A9A9;");
-        }
+    public void setQuestionBoard(QuestionBoard qb){
+        _qb = qb;
     }
 }

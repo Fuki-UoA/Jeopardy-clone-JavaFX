@@ -22,8 +22,9 @@ import java.util.List;
  */
 public class TitleMenu extends BorderPane {
 
-    //Pane for title logo
+    //Panes
     private StackPane _title;
+    private  QuestionBoard _questionBoard;
 
     //Scenes for pages.
     private Scene _rootScene;
@@ -43,6 +44,7 @@ public class TitleMenu extends BorderPane {
     public TitleMenu(Stage stage, Color color){
         _color = color;
         _stage = stage;
+
         //Initialise title
         setTitle();
         setTitleFont();
@@ -154,8 +156,8 @@ public class TitleMenu extends BorderPane {
 
     }
 
-    public void setWinning(int winning){
-        _winning = winning;
+    public void setWinning(){
+        _winning = _logic.getWinning();
     }
 
     public void setRootScene(Scene rootScene){
@@ -164,16 +166,21 @@ public class TitleMenu extends BorderPane {
         //Initialise scenes
         SubMenu qb = new QuestionBoardMenu(_stage, _color);
         qb.setTitleMenu(_rootScene);
+        qb.setQuestionBoard(_questionBoard);
         _QuestionBoardScene = new Scene(qb, 800, 600);
         _QuestionBoardScene.getStylesheets().addAll(this.getStylesheets());
 
-        SubMenu aq = new AskQuestionMenu(_stage, _color);
+        AskQuestionMenu aq = new AskQuestionMenu(_stage, _color);
         aq.setTitleMenu(_rootScene);
+        aq.setQuestionBoard(_questionBoard);
+        aq.update();
         _AskQuestionScene = new Scene(aq, 800, 600);
         _AskQuestionScene.getStylesheets().addAll(this.getStylesheets());
     }
 
     public void setGameLogic(JeopardyLogic logic){
         _logic = logic;
+        _questionBoard = new QuestionBoard(_logic, _color);
+        _questionBoard.getStylesheets().addAll(this.getStylesheets());
     }
 }

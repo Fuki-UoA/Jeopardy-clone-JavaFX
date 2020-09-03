@@ -12,9 +12,9 @@ public class TestJeopardyLogic {
     @Test
     public void testAnswers() throws IOException {
         JeopardyLogic logic = new JeopardyLogic();
-        String[][] answers = logic.getAnswers();
+        String answers = logic.getAnswer(0,0);
 
-        assertEquals("Kiwi", answers[0][0]);
+        assertEquals("Kiwi", answers);
     }
 
 }

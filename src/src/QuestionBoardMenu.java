@@ -12,7 +12,5 @@ public class QuestionBoardMenu extends SubMenu{
 
     public QuestionBoardMenu(Stage stage, Color color){
         super(stage, color);
-
     }
-
 }
