@@ -15,6 +15,7 @@ public class JeopardyLogic {
     private String[][] _questions;
     private String[][] _answers;
     private Boolean[][] _isAnswered;
+    private QuestionBoard _observer;
 
     public JeopardyLogic() throws IOException {
         //Count numbers of categories and questions for game.
@@ -89,6 +90,7 @@ public class JeopardyLogic {
     public int numberOfCategories(){
         return _numOfCategories;
     }
+
     public boolean answer(int category, int question, String answer){
         boolean result;
         if(answer.equals(_answers[category][question])){
@@ -100,7 +102,17 @@ public class JeopardyLogic {
 
         _isAnswered[category][question] = true;
 
+        notifyQuestionBoard();
+
         return result;
+    }
+
+    public void setObserver(QuestionBoard ob){
+        _observer = ob;
+    }
+
+    private void notifyQuestionBoard(){
+        _observer.update();
     }
 
     private void countQuestions() throws IOException {
@@ -127,6 +139,5 @@ public class JeopardyLogic {
         BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String tmp = stdoutBuffered.readLine();
         _numOfCategories = Integer.parseInt(tmp);
-
     }
 }
