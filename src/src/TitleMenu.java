@@ -62,10 +62,7 @@ public class TitleMenu extends BorderPane {
         //Initialise required buttons
         _buttons = new ArrayList<>();
 
-        Button printBoard = new Button("Print question board");
-        _buttons.add(printBoard);
-
-        Button askQuestion = new Button("Ask a question");
+        Button askQuestion = new Button("Answer a question");
         _buttons.add(askQuestion);
 
         Button reset = new Button("Reset");
@@ -84,13 +81,6 @@ public class TitleMenu extends BorderPane {
 
         //Add functionality to the buttons
 
-        printBoard.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                stage.setScene(_QuestionBoardScene);
-            }
-        });
-
         askQuestion.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -106,7 +96,7 @@ public class TitleMenu extends BorderPane {
         });
 
         //Add the buttons to vbox.
-        vbox.getChildren().addAll(printBoard, askQuestion, reset, quit);
+        vbox.getChildren().addAll(askQuestion, reset, quit);
         vbox.setAlignment(Pos.CENTER);
 
         //Create new StackPane
@@ -162,13 +152,6 @@ public class TitleMenu extends BorderPane {
 
     public void setRootScene(Scene rootScene){
         _rootScene = rootScene;
-
-        //Initialise scenes
-        SubMenu qb = new QuestionBoardMenu(_stage, _color);
-        qb.setTitleMenu(_rootScene);
-        qb.setQuestionBoard(_questionBoard);
-        _QuestionBoardScene = new Scene(qb, 800, 600);
-        _QuestionBoardScene.getStylesheets().addAll(this.getStylesheets());
 
         AskQuestionMenu aq = new AskQuestionMenu(_stage, _color);
         aq.setTitleMenu(_rootScene);

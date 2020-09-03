@@ -3,6 +3,7 @@ package src;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
@@ -37,6 +38,7 @@ public class SubMenu extends BorderPane {
             }
         });
 
+        BorderPane.setAlignment(back, Pos.TOP_LEFT);
         this.setTop(back);
         BorderPane.setMargin(back, new Insets(5));
     }
