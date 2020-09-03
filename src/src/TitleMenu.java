@@ -13,6 +13,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is a border pane for title menu
@@ -20,23 +22,34 @@ import java.io.*;
  */
 public class TitleMenu extends BorderPane {
 
+    //Pane for title logo
     private StackPane _title;
+
+    //Scenes for pages.
+    private Scene _rootScene;
+    private Scene _QuestionBoardScene;
+    private Scene _AskQuestionScene;
+
+    private Stage _stage;
+
     private int _winning = 0;
     private Color _color;
-    private Scene _rootScene;
+
     private Text _titleFont = null;
     private JeopardyLogic _logic;
+    private List<Button> _buttons;
+    private String _buttonColor;
 
     public TitleMenu(Stage stage, Color color){
         _color = color;
-
+        _stage = stage;
         //Initialise title
         setTitle();
         setTitleFont();
 
         //Initialise vbox which includes three buttons
         VBox vbox = new VBox(10);
-        vbox.setPrefWidth(100);
+        vbox.setPrefWidth(250);
         this.setBackground(new Background(new BackgroundFill(_color, CornerRadii.EMPTY, Insets.EMPTY)));
 
         try {
@@ -45,17 +58,24 @@ public class TitleMenu extends BorderPane {
         }
 
         //Initialise required buttons
+        _buttons = new ArrayList<>();
+
         Button printBoard = new Button("Print question board");
-        printBoard.setMinWidth(vbox.getPrefWidth());
+        _buttons.add(printBoard);
 
         Button askQuestion = new Button("Ask a question");
-        askQuestion.setMinWidth(vbox.getPrefWidth());
+        _buttons.add(askQuestion);
 
         Button reset = new Button("Reset");
-        reset.setPrefWidth(vbox.getPrefWidth());
+        _buttons.add(reset);
 
         Button quit = new Button("Quit");
-        quit.setMinWidth(vbox.getPrefWidth());
+        _buttons.add(quit);
+
+        for(Button button : _buttons){
+            button.setMinWidth(vbox.getPrefWidth());
+            button.setPrefHeight(50);
+        }
 
         //Initialise text for current winning
         Text t = new Text("Current winning: " + _winning);
@@ -65,20 +85,14 @@ public class TitleMenu extends BorderPane {
         printBoard.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                SubMenu qb = new QuestionBoardMenu(stage, _color);
-                qb.setTitlemenu(_rootScene);
-                Scene scene = new Scene(qb, 800, 600);
-                stage.setScene(scene);
+                stage.setScene(_QuestionBoardScene);
             }
         });
 
         askQuestion.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                SubMenu aq = new AskQuestionMenu(stage, _color);
-                aq.setTitlemenu(_rootScene);
-                Scene scene = new Scene(aq, 800, 600);
-                stage.setScene(scene);
+                stage.setScene(_AskQuestionScene);
             }
         });
 
@@ -146,6 +160,17 @@ public class TitleMenu extends BorderPane {
 
     public void setRootScene(Scene rootScene){
         _rootScene = rootScene;
+
+        //Initialise scenes
+        SubMenu qb = new QuestionBoardMenu(_stage, _color);
+        qb.setTitleMenu(_rootScene);
+        _QuestionBoardScene = new Scene(qb, 800, 600);
+        _QuestionBoardScene.getStylesheets().addAll(this.getStylesheets());
+
+        SubMenu aq = new AskQuestionMenu(_stage, _color);
+        aq.setTitleMenu(_rootScene);
+        _AskQuestionScene = new Scene(aq, 800, 600);
+        _AskQuestionScene.getStylesheets().addAll(this.getStylesheets());
     }
 
     public void setGameLogic(JeopardyLogic logic){

@@ -58,23 +58,12 @@ public class JeopardyLogic {
         
     }
 
-    public String[][] getQuestions(){
-        String[][] result = new String[_numOfQuestions][_numOfCategories];
-        for(int i = 0; i < _numOfQuestions; i++){
-            for (int j = 0; j < _numOfCategories; j++){
-                if(_isAnswered[j][i] == true){
-                    _questions[j][i] = "Answered";
-                } else {
-                    result[j][i] = _questions[i][j];
-                }
-            }
-        }
-
-        return result;
+    public String getQuestion(int category, int question){
+        return _questions[category][question];
     }
 
-    public String[][] getAnswers(){
-        return _answers.clone();
+    public String getAnswer(int category, int question){
+        return _answers[category][question];
     }
 
     public int getWinning(){
@@ -89,15 +78,27 @@ public class JeopardyLogic {
         }
     }
 
-    public boolean answer(int question, int category, String answer){
+    public int[] getScores(){
+        return _scores;
+    }
+
+    public boolean isAnswered(int category, int question){
+        return _isAnswered[category][question];
+    }
+
+    public int numberOfCategories(){
+        return _numOfCategories;
+    }
+    public boolean answer(int category, int question, String answer){
         boolean result;
-        if(answer.equals(_answers[question][category])){
+        if(answer.equals(_answers[category][question])){
             result = true;
+            _winning = _winning + _scores[question];
         }else {
             result = false;
         }
 
-        _isAnswered[question][category] = true;
+        _isAnswered[category][question] = true;
 
         return result;
     }

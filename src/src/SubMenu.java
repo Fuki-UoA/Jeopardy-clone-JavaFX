@@ -9,18 +9,26 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SubMenu extends BorderPane {
     protected Color _color;
     protected Scene _titleMenu;
     protected JeopardyLogic _logic;
+    protected List<Button> _buttons;
 
     public SubMenu(Stage stage, Color color){
         _color = color;
         this.setBackground(new Background(new BackgroundFill(_color, CornerRadii.EMPTY, Insets.EMPTY)));
+        _buttons = new ArrayList<>();
 
         //Create return button to title menu
         Button back = new Button("Return");
 
+        _buttons.add(back);
+
+        styleButtons();
         //Add functionality to back
         back.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -33,11 +41,17 @@ public class SubMenu extends BorderPane {
         BorderPane.setMargin(back, new Insets(5));
     }
 
-    public void setTitlemenu(Scene titleMenu){
+    public void setTitleMenu(Scene titleMenu){
         _titleMenu = titleMenu;
     }
 
     public void setGameLogic(JeopardyLogic logic){
         _logic = logic;
+    }
+
+    private void styleButtons(){
+        for (Button button : _buttons){
+            button.setStyle("-fx-background-color: #A9A9A9;");
+        }
     }
 }

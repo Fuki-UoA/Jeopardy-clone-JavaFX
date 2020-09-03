@@ -24,10 +24,12 @@ public class JeopardyGUI extends Application {
         try {
             logic = new JeopardyLogic();
         } catch (IOException e) {
-            e.printStackTrace();
         }
 
         pane.setGameLogic(logic);
+
+        String style = getClass().getResource("style.css").toExternalForm();
+        pane.getStylesheets().addAll(style);
 
         Scene scene = new Scene(pane, 800, 600);
         pane.setRootScene(scene);
