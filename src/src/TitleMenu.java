@@ -25,6 +25,7 @@ public class TitleMenu extends BorderPane {
     private Color _color;
     private Scene _rootScene;
     private Text _titleFont = null;
+    private JeopardyLogic _logic;
 
     public TitleMenu(Stage stage, Color color){
         _color = color;
@@ -147,4 +148,7 @@ public class TitleMenu extends BorderPane {
         _rootScene = rootScene;
     }
 
+    public void setGameLogic(JeopardyLogic logic){
+        _logic = logic;
+    }
 }

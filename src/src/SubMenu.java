@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 public class SubMenu extends BorderPane {
     protected Color _color;
     protected Scene _titleMenu;
+    protected JeopardyLogic _logic;
 
     public SubMenu(Stage stage, Color color){
         _color = color;
@@ -36,4 +37,7 @@ public class SubMenu extends BorderPane {
         _titleMenu = titleMenu;
     }
 
+    public void setGameLogic(JeopardyLogic logic){
+        _logic = logic;
+    }
 }

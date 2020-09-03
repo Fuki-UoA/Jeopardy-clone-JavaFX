@@ -1,30 +1,35 @@
 package src;
 
 import java.io.*;
+import java.util.Arrays;
 
+/**
+ * This class dictates the logic behind the game Jeopardy.
+ * It interacts with txt files out of src package.
+ */
 public class JeopardyLogic {
     private int _numOfQuestions;
     private int _numOfCategories;
-    private int[] scores;
+    private int[] _scores;
     private int _winning;
-    private String[][] questions;
-    private String[][] answers;
-    private Boolean[][] isAnswered;
+    private String[][] _questions;
+    private String[][] _answers;
+    private Boolean[][] _isAnswered;
 
     public JeopardyLogic() throws IOException {
+        //Count numbers of categories and questions for game.
         countCategories();
         countQuestions();
 
-        scores = new int[_numOfQuestions];
-        questions = new String[_numOfCategories][_numOfQuestions];
-        answers = new String[_numOfCategories][_numOfQuestions];
-        isAnswered = new Boolean[_numOfCategories][_numOfQuestions];
+        //Initialise required fields.
+        _winning = 0;
+        _scores = new int[_numOfQuestions];
+        _questions = new String[_numOfCategories][_numOfQuestions];
+        _answers = new String[_numOfCategories][_numOfQuestions];
+        _isAnswered = new Boolean[_numOfCategories][_numOfQuestions];
 
-        for(int i = 0; i < _numOfQuestions; i++){
-            for(int j = 0; j < _numOfCategories; j++){
-                isAnswered[i][j] = false;
-            }
-        }
+        //Fill isAnswered with false
+        Arrays.fill(_isAnswered, false);
 
         BufferedReader br = new BufferedReader(new FileReader(new File(".." + File.separator +"categories")));
 
@@ -39,9 +44,9 @@ public class JeopardyLogic {
             while((line = in.readLine()) != null){
                 String[] aLine = line.split(",");
 
-                scores[i] = Integer.parseInt(aLine[0]);
-                questions[i][j] = aLine[1];
-                answers[i][j] = aLine[2];
+                _scores[i] = Integer.parseInt(aLine[0]);
+                _questions[i][j] = aLine[1];
+                _answers[i][j] = aLine[2];
 
                 i++;
             }
@@ -50,14 +55,14 @@ public class JeopardyLogic {
         
     }
 
-    public String[][] getAnswers(){
+    public String[][] getQuestions(){
         String[][] result = new String[_numOfQuestions][_numOfCategories];
         for(int i = 0; i < _numOfQuestions; i++){
             for (int j = 0; j < _numOfCategories; j++){
-                if(isAnswered[i][j] == true){
-                    questions[i][j] = "Answered";
+                if(_isAnswered[i][j] == true){
+                    _questions[i][j] = "Answered";
                 } else {
-                    result[i][j] = questions[i][j];
+                    result[i][j] = _questions[i][j];
                 }
             }
         }
@@ -65,12 +70,30 @@ public class JeopardyLogic {
         return result;
     }
 
+    public String[][] getAnswers(){
+        return _answers.clone();
+    }
+
     public int getWinning(){
         return _winning;
     }
-    
+
     public void reset() {
         _winning = 0;
+        Arrays.fill(_isAnswered, false);
+    }
+
+    public boolean answer(int question, int category, String answer){
+        boolean result;
+        if(answer.equals(_answers[question][category])){
+            result = true;
+        }else {
+            result = false;
+        }
+
+        _isAnswered[question][category] = true;
+
+        return result;
     }
 
     private int readFirstLine(ProcessBuilder p) throws IOException {

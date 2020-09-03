@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class JeopardyGUI extends Application {
 
@@ -18,6 +19,15 @@ public class JeopardyGUI extends Application {
         primaryStage.setTitle("Jeopardy");
 
         TitleMenu pane = new TitleMenu(primaryStage, Color.color(0.43,0.39,0.39));
+        JeopardyLogic logic = null;
+
+        try {
+            logic = new JeopardyLogic();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        pane.setGameLogic(logic);
 
         Scene scene = new Scene(pane, 800, 600);
         pane.setRootScene(scene);
