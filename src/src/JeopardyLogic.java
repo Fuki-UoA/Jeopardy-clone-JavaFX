@@ -1,7 +1,11 @@
 package src;
 
+import javafx.scene.Node;
+
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * This class dictates the logic behind the game Jeopardy.
@@ -17,7 +21,8 @@ public class JeopardyLogic {
     private String[][] _questions;
     private String[][] _answers;
     private Boolean[][] _isAnswered;
-    private QuestionBoard _observer;
+
+    private List<Observer> _observers;
 
     public JeopardyLogic() throws IOException {
         //Count numbers of categories and questions for game.
@@ -30,6 +35,7 @@ public class JeopardyLogic {
         _questions = new String[_numOfCategories][_numOfQuestions];
         _answers = new String[_numOfCategories][_numOfQuestions];
         _isAnswered = new Boolean[_numOfCategories][_numOfQuestions];
+        _observers = new ArrayList<>();
 
 
         //Fill isAnswered with false
@@ -105,21 +111,24 @@ public class JeopardyLogic {
             _winning = _winning + _scores[question];
         }else {
             result = false;
+            _winning = _winning - _scores[question];
         }
 
         _isAnswered[category][question] = true;
 
-        notifyQuestionBoard();
+        notifyObservers();
 
         return result;
     }
 
-    public void setObserver(QuestionBoard ob){
-        _observer = ob;
+    public void setObserver(Observer ob){
+        _observers.add(ob);
     }
 
-    private void notifyQuestionBoard(){
-        _observer.update();
+    private void notifyObservers(){
+        for (Observer observer : _observers){
+            observer.update();
+        }
     }
 
     private void countQuestions() throws IOException {
