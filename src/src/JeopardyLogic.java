@@ -6,6 +6,7 @@ import java.util.Arrays;
 /**
  * This class dictates the logic behind the game Jeopardy.
  * It interacts with txt files out of src package.
+ * It is observable from observer class QuestionBoard
  */
 public class JeopardyLogic {
     private int _numOfQuestions;
@@ -99,7 +100,7 @@ public class JeopardyLogic {
 
     public boolean answer(int category, int question, String answer){
         boolean result;
-        if(answer.equals(_answers[category][question])){
+        if(answer.equalsIgnoreCase(_answers[category][question])){
             result = true;
             _winning = _winning + _scores[question];
         }else {
