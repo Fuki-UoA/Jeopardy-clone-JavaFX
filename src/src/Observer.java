@@ -1,2 +1,5 @@
-package src;public class Observer {
+package src;
+
+public interface Observer {
+    public void update();
 }
