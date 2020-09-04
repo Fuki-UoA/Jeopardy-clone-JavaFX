@@ -20,7 +20,7 @@ import java.util.List;
  * This class is a border pane for title menu
  * of Jeopardy.
  */
-public class TitleMenu extends BorderPane {
+public class TitleMenu extends BorderPane implements Observer{
 
     //Panes
     private StackPane _title;
@@ -37,6 +37,8 @@ public class TitleMenu extends BorderPane {
     private Color _color;
 
     private Text _titleFont = null;
+    private Text _winningText;
+
     private JeopardyLogic _logic;
     private List<Button> _buttons;
     private String _buttonColor;
@@ -77,7 +79,7 @@ public class TitleMenu extends BorderPane {
         }
 
         //Initialise text for current winning
-        Text t = new Text("Current winning: " + _winning);
+        _winningText = new Text("Current winning: " + _winning);
 
         //Add functionality to the buttons
 
@@ -99,19 +101,15 @@ public class TitleMenu extends BorderPane {
         vbox.getChildren().addAll(askQuestion, reset, quit);
         vbox.setAlignment(Pos.CENTER);
 
-        //Create new StackPane
-        StackPane bottom = new StackPane();
-        bottom.setPrefHeight(20);
-        bottom.getChildren().add(t);
-
         //Set nodes to this object.
         this.setCenter(vbox);
         this.setTop(_titleFont);
 
         BorderPane.setAlignment(_titleFont, Pos.TOP_CENTER);
         BorderPane.setMargin(_titleFont, new Insets(50,0,0,0));
+        BorderPane.setAlignment(_winningText, Pos.CENTER);
 
-        this.setBottom(bottom);
+        this.setBottom(_winningText);
     }
 
     private void setTitle(){
@@ -146,24 +144,35 @@ public class TitleMenu extends BorderPane {
 
     }
 
-    public void setWinning(){
+    @Override
+    public void update(){
         _winning = _logic.getWinning();
+        _winningText = new Text("Current winning: " + _winning);
+        BorderPane.setAlignment(_winningText, Pos.CENTER);
+
+        this.setBottom(_winningText);
     }
 
     public void setRootScene(Scene rootScene){
         _rootScene = rootScene;
 
         AskQuestionMenu aq = new AskQuestionMenu(_stage, _color);
-        aq.setTitleMenu(_rootScene);
+        aq.setRootMenu(_rootScene);
         aq.setQuestionBoard(_questionBoard);
         aq.update();
         _AskQuestionScene = new Scene(aq, 800, 600);
         _AskQuestionScene.getStylesheets().addAll(this.getStylesheets());
+
+        _questionBoard.setRootMenu(_rootScene);
+        _questionBoard.setCurrentMenu(_AskQuestionScene);
     }
 
     public void setGameLogic(JeopardyLogic logic){
         _logic = logic;
-        _questionBoard = new QuestionBoard(_logic, _color);
+        _questionBoard = new QuestionBoard(_stage, _logic, _color);
         _questionBoard.getStylesheets().addAll(this.getStylesheets());
+
+        _logic.setObserver(_questionBoard);
+        _logic.setObserver(this);
     }
 }
