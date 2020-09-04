@@ -19,8 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class QuestionMenu extends SubMenu{
-    JeopardyLogic _logic;
-    Font _font;
+    private TitleMenu _titleMenu;
+    private JeopardyLogic _logic;
+    private Font _font;
 
     public QuestionMenu(Stage stage, Color color, JeopardyLogic logic, int category, int question){
         super(stage, color);
@@ -52,6 +53,7 @@ public class QuestionMenu extends SubMenu{
                 }else{
                     System.out.println("Incorrect");
                 }
+
             }
         });
 
@@ -61,6 +63,10 @@ public class QuestionMenu extends SubMenu{
 
         this.setCenter(q);
         this.setBottom(hbox);
+    }
+
+    public void setTitleMenu(TitleMenu titleMenu){
+        _titleMenu = titleMenu;
     }
 
     private void getFont(){
