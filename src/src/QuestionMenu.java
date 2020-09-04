@@ -22,10 +22,14 @@ public class QuestionMenu extends SubMenu{
     private TitleMenu _titleMenu;
     private JeopardyLogic _logic;
     private Font _font;
+    private int _category;
+    private int _question;
 
     public QuestionMenu(Stage stage, Color color, JeopardyLogic logic, int category, int question){
         super(stage, color);
         _logic = logic;
+        _category = category;
+        _question = question;
 
         getFont();
 
@@ -61,6 +65,8 @@ public class QuestionMenu extends SubMenu{
 
         hbox.getChildren().addAll(a, btn);
 
+        runScript();
+
         this.setCenter(q);
         this.setBottom(hbox);
     }
@@ -73,6 +79,16 @@ public class QuestionMenu extends SubMenu{
         String fontLocation = ".." + File.separator + "fonts" + File.separator + "ITC Korinna Regular.ttf";
         InputStream is = QuestionMenu.class.getResourceAsStream(fontLocation);
         _font = Font.loadFont(is, 75);
+    }
+
+    private void runScript(){
+        ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", "echo " + _logic.getQuestion(_category, _question)
+                + "| festival --tts");
+        try {
+            pb.start();
+        } catch (IOException e) {
+
+        }
     }
 
 }
