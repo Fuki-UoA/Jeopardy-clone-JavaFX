@@ -3,6 +3,7 @@ package src;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -31,18 +32,20 @@ public class QuestionMenu extends SubMenu{
         _category = category;
         _question = question;
 
+        this.setTop(null);
+
         getFont();
 
         Text q = new Text(logic.getQuestion(category, question));
         q.setFont(_font);
         q.setWrappingWidth(600);
-        BorderPane.setAlignment(q, Pos.TOP_CENTER);
+        BorderPane.setAlignment(q, Pos.CENTER);
 
         TextField a = new TextField();
         a.setPrefWidth(2000);
 
         Button btn = new Button("Answer");
-        btn.getStylesheets().addAll(this.getStylesheets());
+        btn.getStylesheets().addAll(getStylesheets());
         btn.setMinWidth(100);
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -52,12 +55,15 @@ public class QuestionMenu extends SubMenu{
                     return;
                 }
 
+                ResultMenu result;
                 if(logic.answer(category, question, userAns)){
-                    System.out.println("correct");
+                    result = new ResultMenu(stage, color, true ,logic, category, question);
                 }else{
-                    System.out.println("Incorrect");
+                    result = new ResultMenu(stage, color, false ,logic, category, question);
                 }
-
+                result.getStylesheets().addAll(getStylesheets());
+                result.setRootMenu(_rootMenu);
+                stage.setScene(new Scene(result, 800, 600));
             }
         });
 
@@ -77,8 +83,8 @@ public class QuestionMenu extends SubMenu{
 
     private void getFont(){
         String fontLocation = ".." + File.separator + "fonts" + File.separator + "ITC Korinna Regular.ttf";
-        InputStream is = QuestionMenu.class.getResourceAsStream(fontLocation);
-        _font = Font.loadFont(is, 75);
+        FontLoader font = new FontLoader(fontLocation, 75.0);
+        _font = font.getFont();
     }
 
     private void runScript(){

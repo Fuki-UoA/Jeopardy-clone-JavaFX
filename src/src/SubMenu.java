@@ -15,7 +15,7 @@ import java.util.List;
 
 public class SubMenu extends BorderPane {
     protected Color _color;
-    protected Scene _titleMenu;
+    protected Scene _rootMenu;
     protected JeopardyLogic _logic;
     protected List<Button> _buttons;
     protected QuestionBoard _qb;
@@ -34,7 +34,7 @@ public class SubMenu extends BorderPane {
         back.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                stage.setScene(_titleMenu);
+                stage.setScene(_rootMenu);
             }
         });
 
@@ -43,8 +43,8 @@ public class SubMenu extends BorderPane {
         BorderPane.setMargin(back, new Insets(5));
     }
 
-    public void setTitleMenu(Scene titleMenu){
-        _titleMenu = titleMenu;
+    public void setRootMenu(Scene rootMenu){
+        _rootMenu = rootMenu;
     }
 
     public void setGameLogic(JeopardyLogic logic){

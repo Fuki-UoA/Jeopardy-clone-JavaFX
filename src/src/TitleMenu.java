@@ -64,7 +64,7 @@ public class TitleMenu extends BorderPane implements Observer{
         //Initialise required buttons
         _buttons = new ArrayList<>();
 
-        Button askQuestion = new Button("Answer a question");
+        Button askQuestion = new Button("Play a game");
         _buttons.add(askQuestion);
 
         Button reset = new Button("Reset");
@@ -119,15 +119,9 @@ public class TitleMenu extends BorderPane implements Observer{
 
     private void setTitleFont(){
         if(_titleFont == null){
-            String fontFile = ".."+ File.separator + "fonts" + File.separator + "gyparody hv.ttf";
-            InputStream fontStream = TitleMenu.class.getResourceAsStream(fontFile);
-            Font font = null;
-            if(fontStream != null){
-                font = Font.loadFont(fontStream, 150);
-            }
-
+            FontLoader font = new FontLoader(".."+ File.separator + "fonts" + File.separator + "gyparody hv.ttf", 150.0);
             _titleFont = new Text("Jeopardy!");
-            _titleFont.setFont(font);
+            _titleFont.setFont(font.getFont());
         }
     }
 
