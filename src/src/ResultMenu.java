@@ -21,7 +21,7 @@ public class ResultMenu extends SubMenu{
         _category = category;
         _question = question;
         _logic = logic;
-        
+
         FontLoader font =
                 new FontLoader(".." + File.separator + "fonts" + File.separator + "ITC Korinna Regular.ttf", 75.0);
         Text text = new Text();

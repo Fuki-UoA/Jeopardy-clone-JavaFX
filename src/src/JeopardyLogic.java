@@ -86,6 +86,8 @@ public class JeopardyLogic {
         for(int i = 0; i < _numOfCategories; i++){
             Arrays.fill(_isAnswered[i], false);
         }
+
+        notifyObservers();
     }
 
     public int[] getScores(){
