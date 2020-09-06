@@ -132,6 +132,7 @@ public class TitleMenu extends BorderPane implements Observer{
                 if (result.get() == ButtonType.OK){
                     _logic.reset();
                     _saved = false;
+                    update();
                 } else {
                     // do nothing
                 }
