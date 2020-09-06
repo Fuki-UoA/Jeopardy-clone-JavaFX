@@ -88,7 +88,8 @@ public class QuestionMenu extends SubMenu{
     }
 
     private void runScript(){
-        ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", "echo " + _logic.getQuestion(_category, _question)
+        ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", "echo "
+                + _logic.getQuestion(_category, _question).replaceAll("'", "")
                 + "| festival --tts");
         try {
             pb.start();

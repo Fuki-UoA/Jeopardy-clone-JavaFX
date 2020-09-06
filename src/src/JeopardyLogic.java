@@ -214,7 +214,6 @@ public class JeopardyLogic {
         BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
         int total = Integer.parseInt(stdoutBuffered.readLine());
-        System.out.println(total);
         _numOfQuestions = total / _numOfCategories;
     }
 
