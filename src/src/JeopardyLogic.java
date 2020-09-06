@@ -181,7 +181,6 @@ public class JeopardyLogic {
             String line = null;
             while((line = bf.readLine()) != null){
                 String[] ans = line.split(", ");
-                System.out.println(ans[0] + ans[1]);
                 _isAnswered[Integer.parseInt(ans[0])][Integer.parseInt(ans[1])] = true;
             }
         } catch(FileNotFoundException e){

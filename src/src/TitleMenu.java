@@ -35,6 +35,8 @@ public class TitleMenu extends BorderPane implements Observer{
 
     private Stage _stage;
 
+    private Button _resume;
+
     private int _winning = 0;
     private Color _color;
     private boolean _saved;
@@ -86,8 +88,8 @@ public class TitleMenu extends BorderPane implements Observer{
         Button quit = new Button("Quit");
         _buttons.add(quit);
 
-        Button resume = new Button("Resume a game");
-        _buttons.add(resume);
+        _resume = new Button("Resume a game");
+        _buttons.add(_resume);
 
         for(Button button : _buttons){
             button.setMinWidth(_vbox.getPrefWidth());
@@ -109,10 +111,9 @@ public class TitleMenu extends BorderPane implements Observer{
 
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == ButtonType.OK){
+                        _saved = false;
                         _logic.reset();
                         _logic.removeGame();
-
-                        _saved = false;
                     }else {
                         return;
                     }
@@ -131,6 +132,7 @@ public class TitleMenu extends BorderPane implements Observer{
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK){
                     _logic.reset();
+                    _saved = false;
                 } else {
                     // do nothing
                 }
@@ -155,7 +157,7 @@ public class TitleMenu extends BorderPane implements Observer{
             }
         });
 
-        resume.setOnAction(new EventHandler<ActionEvent>() {
+        _resume.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 _logic.resumeGame();
@@ -165,7 +167,7 @@ public class TitleMenu extends BorderPane implements Observer{
 
         //Add the buttons to vbox.
         if(_saved){
-            _vbox.getChildren().add(resume);
+            _vbox.getChildren().add(_resume);
         }
 
         _vbox.getChildren().addAll(askQuestion, reset, quit);
@@ -215,9 +217,7 @@ public class TitleMenu extends BorderPane implements Observer{
         BorderPane.setAlignment(_winningText, Pos.CENTER);
 
         if(!_saved){
-            _buttons.remove(0);
-
-            _vbox.getChildren().remove(0);
+            _vbox.getChildren().remove(_resume);
             this.setCenter(_vbox);
         }
 
