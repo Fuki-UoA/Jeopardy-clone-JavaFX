@@ -1,5 +1,6 @@
 package src;
 
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -61,7 +62,7 @@ public class JeopardyLogic {
 
                 _scores[i] = Integer.parseInt(aLine[0]);
                 _questions[j][i] = aLine[1];
-                _answers[j][i] = aLine[2];
+                _answers[j][i] = aLine[2].replaceAll(" ", "");
 
                 i++;
             }
