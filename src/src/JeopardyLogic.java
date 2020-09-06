@@ -1,11 +1,14 @@
 package src;
 
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class dictates the logic behind the game Jeopardy.
@@ -121,6 +124,70 @@ public class JeopardyLogic {
         notifyObservers();
 
         return result;
+    }
+
+    public void saveGame(){
+        File file = new File("./src/save_data/save.txt");
+
+        try {
+            PrintWriter pr = new PrintWriter(new FileWriter(file));
+
+            pr.println(_winning);
+
+            for(int i = 0; i < _numOfCategories; i++){
+                pr.print(_categories[i] + " ");
+            }
+
+            pr.println("");
+
+            for(int i = 0; i < _numOfCategories; i++){
+                for(int j = 0; j < _numOfQuestions; j++){
+                    if(_isAnswered[i][j]){
+                        pr.println(i + ", " + j);
+                    }
+                }
+            }
+
+            pr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public boolean resumeGame() {
+        BufferedReader bf = null;
+        String[] categories = null;
+
+        try {
+            File file = new File("./src/save_data/save.txt");
+            bf = new BufferedReader(new FileReader(file));
+
+             int winning = Integer.parseInt(bf.readLine());
+
+            categories = bf.readLine().split(" ");
+
+            if(categories.length != _numOfCategories){
+                return false;
+            }
+
+            _winning = winning;
+
+            String line = null;
+            while((line = bf.readLine()) != null){
+                String[] ans = line.split(", ");
+                System.out.println(ans[0] + ans[1]);
+                _isAnswered[Integer.parseInt(ans[0])][Integer.parseInt(ans[1])] = true;
+            }
+        } catch(FileNotFoundException e){
+            return false;
+        } catch (IOException e) {
+            return false;
+        }
+
+        notifyObservers();
+
+        return true;
     }
 
     public void setObserver(Observer ob){

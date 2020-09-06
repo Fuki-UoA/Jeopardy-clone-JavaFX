@@ -31,13 +31,13 @@ public class TitleMenu extends BorderPane implements Observer{
 
     //Scenes for pages.
     private Scene _rootScene;
-    private Scene _QuestionBoardScene;
     private Scene _AskQuestionScene;
 
     private Stage _stage;
 
     private int _winning = 0;
     private Color _color;
+    private boolean _saved =false;
 
     private Text _titleFont = null;
     private Text _winningText;
@@ -46,9 +46,16 @@ public class TitleMenu extends BorderPane implements Observer{
     private List<Button> _buttons;
     private String _buttonColor;
 
-    public TitleMenu(Stage stage, Color color){
+    public TitleMenu(Stage stage, Color color, JeopardyLogic logic){
         _color = color;
         _stage = stage;
+
+        _logic = logic;
+        _questionBoard = new QuestionBoard(_stage, _logic, _color);
+        _questionBoard.getStylesheets().addAll(this.getStylesheets());
+
+        _logic.setObserver(_questionBoard);
+        _logic.setObserver(this);
 
         //Initialise title
         setTitle();
@@ -76,6 +83,9 @@ public class TitleMenu extends BorderPane implements Observer{
         Button quit = new Button("Quit");
         _buttons.add(quit);
 
+        Button resume = new Button("Resume a game");
+        _buttons.add(resume);
+
         for(Button button : _buttons){
             button.setMinWidth(vbox.getPrefWidth());
             button.setPrefHeight(50);
@@ -89,6 +99,21 @@ public class TitleMenu extends BorderPane implements Observer{
         askQuestion.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                if(_saved){
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("New game");
+                    alert.setHeaderText("Are you sure you want to start a new game? (Data will be lost)");
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        _logic.reset();
+                        
+                        stage.close();
+                    } else {
+                        // do nothing
+                    }
+                }
+                _logic.reset();
                 stage.setScene(_AskQuestionScene);
             }
         });
@@ -114,10 +139,12 @@ public class TitleMenu extends BorderPane implements Observer{
             public void handle(ActionEvent actionEvent) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Quitting game");
-                alert.setHeaderText("Are you sure you want to quit?");
+                alert.setHeaderText("Are you sure you want to quit? (Data will not be lost)");
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK){
+                    _logic.saveGame();
+
                     stage.close();
                 } else {
                     // do nothing
@@ -125,7 +152,20 @@ public class TitleMenu extends BorderPane implements Observer{
             }
         });
 
+        resume.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                _logic.resumeGame();
+                stage.setScene(_AskQuestionScene);
+            }
+        });
+
         //Add the buttons to vbox.
+        _saved = false;
+        if(_saved = _logic.resumeGame()){
+            vbox.getChildren().add(resume);
+        }
+
         vbox.getChildren().addAll(askQuestion, reset, quit);
         vbox.setAlignment(Pos.CENTER);
 
@@ -187,14 +227,5 @@ public class TitleMenu extends BorderPane implements Observer{
 
         _questionBoard.setRootMenu(_rootScene);
         _questionBoard.setCurrentMenu(_AskQuestionScene);
-    }
-
-    public void setGameLogic(JeopardyLogic logic){
-        _logic = logic;
-        _questionBoard = new QuestionBoard(_stage, _logic, _color);
-        _questionBoard.getStylesheets().addAll(this.getStylesheets());
-
-        _logic.setObserver(_questionBoard);
-        _logic.setObserver(this);
     }
 }

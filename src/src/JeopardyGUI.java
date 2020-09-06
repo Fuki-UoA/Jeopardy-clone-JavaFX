@@ -18,7 +18,6 @@ public class JeopardyGUI extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Jeopardy");
 
-        TitleMenu pane = new TitleMenu(primaryStage, Color.color(0.43,0.39,0.39));
         JeopardyLogic logic = null;
 
         try {
@@ -26,7 +25,7 @@ public class JeopardyGUI extends Application {
         } catch (IOException e) {
         }
 
-        pane.setGameLogic(logic);
+        TitleMenu pane = new TitleMenu(primaryStage, Color.color(0.43,0.39,0.39), logic);
 
         String style = getClass().getResource("style.css").toExternalForm();
         pane.getStylesheets().addAll(style);
