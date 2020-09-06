@@ -155,6 +155,11 @@ public class JeopardyLogic {
 
     }
 
+    public void removeGame(){
+        File file = new File("./src/save_data/save.txt");
+        file.delete();
+    }
+
     public boolean resumeGame() {
         BufferedReader bf = null;
         String[] categories = null;

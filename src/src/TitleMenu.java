@@ -37,20 +37,23 @@ public class TitleMenu extends BorderPane implements Observer{
 
     private int _winning = 0;
     private Color _color;
-    private boolean _saved =false;
+    private boolean _saved;
 
     private Text _titleFont = null;
     private Text _winningText;
 
     private JeopardyLogic _logic;
     private List<Button> _buttons;
-    private String _buttonColor;
+
+    private VBox _vbox;
 
     public TitleMenu(Stage stage, Color color, JeopardyLogic logic){
         _color = color;
         _stage = stage;
-
         _logic = logic;
+
+        _saved = _logic.resumeGame();
+
         _questionBoard = new QuestionBoard(_stage, _logic, _color);
         _questionBoard.getStylesheets().addAll(this.getStylesheets());
 
@@ -62,8 +65,8 @@ public class TitleMenu extends BorderPane implements Observer{
         setTitleFont();
 
         //Initialise vbox which includes three buttons
-        VBox vbox = new VBox(10);
-        vbox.setPrefWidth(250);
+        _vbox = new VBox(10);
+        _vbox.setPrefWidth(250);
         this.setBackground(new Background(new BackgroundFill(_color, CornerRadii.EMPTY, Insets.EMPTY)));
 
         try {
@@ -74,7 +77,7 @@ public class TitleMenu extends BorderPane implements Observer{
         //Initialise required buttons
         _buttons = new ArrayList<>();
 
-        Button askQuestion = new Button("Play a game");
+        Button askQuestion = new Button("Play a new game");
         _buttons.add(askQuestion);
 
         Button reset = new Button("Reset");
@@ -87,7 +90,7 @@ public class TitleMenu extends BorderPane implements Observer{
         _buttons.add(resume);
 
         for(Button button : _buttons){
-            button.setMinWidth(vbox.getPrefWidth());
+            button.setMinWidth(_vbox.getPrefWidth());
             button.setPrefHeight(50);
         }
 
@@ -107,13 +110,13 @@ public class TitleMenu extends BorderPane implements Observer{
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == ButtonType.OK){
                         _logic.reset();
-                        
-                        stage.close();
-                    } else {
-                        // do nothing
+                        _logic.removeGame();
+
+                        _saved = false;
+                    }else {
+                        return;
                     }
                 }
-                _logic.reset();
                 stage.setScene(_AskQuestionScene);
             }
         });
@@ -161,16 +164,15 @@ public class TitleMenu extends BorderPane implements Observer{
         });
 
         //Add the buttons to vbox.
-        _saved = false;
-        if(_saved = _logic.resumeGame()){
-            vbox.getChildren().add(resume);
+        if(_saved){
+            _vbox.getChildren().add(resume);
         }
 
-        vbox.getChildren().addAll(askQuestion, reset, quit);
-        vbox.setAlignment(Pos.CENTER);
+        _vbox.getChildren().addAll(askQuestion, reset, quit);
+        _vbox.setAlignment(Pos.CENTER);
 
         //Set nodes to this object.
-        this.setCenter(vbox);
+        this.setCenter(_vbox);
         this.setTop(_titleFont);
 
         BorderPane.setAlignment(_titleFont, Pos.TOP_CENTER);
@@ -211,6 +213,13 @@ public class TitleMenu extends BorderPane implements Observer{
         _winning = _logic.getWinning();
         _winningText = new Text("Current winning: " + _winning);
         BorderPane.setAlignment(_winningText, Pos.CENTER);
+
+        if(!_saved){
+            _buttons.remove(0);
+
+            _vbox.getChildren().remove(0);
+            this.setCenter(_vbox);
+        }
 
         this.setBottom(_winningText);
     }
