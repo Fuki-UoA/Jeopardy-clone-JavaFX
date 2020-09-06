@@ -27,6 +27,8 @@ public class JeopardyLogic {
     private String[][] _answers;
     private Boolean[][] _isAnswered;
 
+    private File _jarPath;
+
     private List<Observer> _observers;
 
     public JeopardyLogic() throws IOException {
@@ -48,14 +50,14 @@ public class JeopardyLogic {
             Arrays.fill(_isAnswered[i], false);
         }
 
-        File jarPath = null;
+        _jarPath = null;
         try {
-            jarPath = new File(JeopardyLogic.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            _jarPath = new File(JeopardyLogic.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        
-        String catPath = jarPath.getParentFile().getAbsolutePath() + File.separator + "categories";
+
+        String catPath = _jarPath.getParentFile().getAbsolutePath() + File.separator + "categories";
 
         InputStream inp = null;
 
@@ -78,29 +80,6 @@ public class JeopardyLogic {
             }
         }
 
-        /**
-        int i = 0;
-        int j = 0;
-
-        String line;
-        while ((line = br.readLine()) != null) {
-            String dir = "categories" + File.separator + line;
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(JeopardyLogic.class.getClassLoader().getResourceAsStream(dir)));
-
-            while((line = in.readLine()) != null){
-                String[] aLine = line.split(",");
-
-                _scores[i] = Integer.parseInt(aLine[0]);
-                _questions[j][i] = aLine[1];
-                _answers[j][i] = aLine[2].replaceAll(" ", "");
-
-                i++;
-            }
-            i=0;
-            j++;
-        }
-        */
     }
 
     public String getQuestion(int category, int question){
@@ -159,10 +138,11 @@ public class JeopardyLogic {
     }
 
     public void saveGame(){
-        File file = new File("./src/src/save_data/save.txt");
+
+        String catPath = _jarPath.getParentFile().getAbsolutePath() + File.separator + "save_data" + File.separator + "save.txt";
 
         try {
-            PrintWriter pr = new PrintWriter(new FileWriter(file));
+            PrintWriter pr = new PrintWriter(new FileWriter(catPath));
 
             pr.println(_winning);
 
@@ -188,7 +168,7 @@ public class JeopardyLogic {
     }
 
     public void removeGame(){
-        File file = new File("./src/src/save_data/save.txt");
+        File file = new File(_jarPath.getParentFile().getAbsolutePath() + File.separator + "save_data"+ File.separator + "save.txt");
         file.delete();
     }
 
@@ -197,7 +177,7 @@ public class JeopardyLogic {
         String[] categories = null;
 
         try {
-            File file = new File("./src/src/save_data/save.txt");
+            File file = new File(_jarPath.getParentFile().getAbsolutePath() + File.separator +"save_data" + File.separator + "save.txt");
             bf = new BufferedReader(new FileReader(file));
 
              int winning = Integer.parseInt(bf.readLine());
@@ -216,6 +196,7 @@ public class JeopardyLogic {
                 _isAnswered[Integer.parseInt(ans[0])][Integer.parseInt(ans[1])] = true;
             }
         } catch(FileNotFoundException e){
+            e.printStackTrace();
             return false;
         } catch (IOException e) {
             return false;
