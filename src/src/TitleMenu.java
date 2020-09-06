@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -191,7 +190,7 @@ public class TitleMenu extends BorderPane implements Observer{
 
     private void setTitleFont(){
         if(_titleFont == null){
-            FontLoader font = new FontLoader(".."+ File.separator + "fonts" + File.separator + "gyparody hv.ttf", 150.0);
+            FontLoader font = new FontLoader("fonts" + File.separator + "gyparody hv.ttf", 150.0);
             _titleFont = new Text("Jeopardy!");
             _titleFont.setFont(font.getFont());
         }

@@ -23,6 +23,7 @@ public class JeopardyGUI extends Application {
         try {
             logic = new JeopardyLogic();
         } catch (IOException e) {
+            e.printStackTrace();
         }
 
         TitleMenu pane = new TitleMenu(primaryStage, Color.color(0.43,0.39,0.39), logic);

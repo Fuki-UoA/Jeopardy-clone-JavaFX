@@ -6,8 +6,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -17,7 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class QuestionMenu extends SubMenu{
     private TitleMenu _titleMenu;
@@ -82,7 +79,7 @@ public class QuestionMenu extends SubMenu{
     }
 
     private void getFont(){
-        String fontLocation = ".." + File.separator + "fonts" + File.separator + "ITC Korinna Regular.ttf";
+        String fontLocation = "fonts" + File.separator + "ITC Korinna Regular.ttf";
         FontLoader font = new FontLoader(fontLocation, 75.0);
         _font = font.getFont();
     }

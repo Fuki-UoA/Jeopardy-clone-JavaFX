@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,15 +48,45 @@ public class JeopardyLogic {
             Arrays.fill(_isAnswered[i], false);
         }
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(JeopardyLogic.class.getResourceAsStream(".." + File.separator +"categories")));
+        File jarPath = null;
+        try {
+            jarPath = new File(JeopardyLogic.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        
+        String catPath = jarPath.getParentFile().getAbsolutePath() + File.separator + "categories";
 
+        InputStream inp = null;
+
+
+        for(int i = 0; i < _numOfCategories; i++){
+            inp = new FileInputStream(catPath + File.separator + _categories[i]);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(inp));
+
+            String line = null;
+            int j = 0;
+            while((line = br.readLine()) != null){
+                String[] aLine = line.split(",");
+
+                _scores[j] = Integer.parseInt(aLine[0]);
+                _questions[i][j] = aLine[1];
+                _answers[i][j] = aLine[2].replaceAll(" ", "");
+
+                j++;
+            }
+        }
+
+        /**
         int i = 0;
         int j = 0;
 
         String line;
         while ((line = br.readLine()) != null) {
-            String dir = ".." + File.separator +"categories" + File.separator + line;
-            BufferedReader in = new BufferedReader(new InputStreamReader(JeopardyLogic.class.getResourceAsStream(dir)));
+            String dir = "categories" + File.separator + line;
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(JeopardyLogic.class.getClassLoader().getResourceAsStream(dir)));
 
             while((line = in.readLine()) != null){
                 String[] aLine = line.split(",");
@@ -69,7 +100,7 @@ public class JeopardyLogic {
             i=0;
             j++;
         }
-        
+        */
     }
 
     public String getQuestion(int category, int question){
@@ -128,7 +159,7 @@ public class JeopardyLogic {
     }
 
     public void saveGame(){
-        File file = new File("./src/save_data/save.txt");
+        File file = new File("./src/src/save_data/save.txt");
 
         try {
             PrintWriter pr = new PrintWriter(new FileWriter(file));
@@ -157,7 +188,7 @@ public class JeopardyLogic {
     }
 
     public void removeGame(){
-        File file = new File("./src/save_data/save.txt");
+        File file = new File("./src/src/save_data/save.txt");
         file.delete();
     }
 
@@ -166,7 +197,7 @@ public class JeopardyLogic {
         String[] categories = null;
 
         try {
-            File file = new File("./src/save_data/save.txt");
+            File file = new File("./src/src/save_data/save.txt");
             bf = new BufferedReader(new FileReader(file));
 
              int winning = Integer.parseInt(bf.readLine());
