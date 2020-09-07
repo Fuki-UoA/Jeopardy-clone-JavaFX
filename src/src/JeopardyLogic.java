@@ -196,7 +196,6 @@ public class JeopardyLogic {
                 _isAnswered[Integer.parseInt(ans[0])][Integer.parseInt(ans[1])] = true;
             }
         } catch(FileNotFoundException e){
-            e.printStackTrace();
             return false;
         } catch (IOException e) {
             return false;

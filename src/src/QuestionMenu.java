@@ -40,6 +40,23 @@ public class QuestionMenu extends SubMenu{
 
         TextField a = new TextField();
         a.setPrefWidth(2000);
+        a.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String userAns = a.getText();
+                if(userAns == null || userAns.isBlank()){
+                    return;
+                }
+
+                ResultMenu result = resultMenu(stage, userAns);
+
+                result.getStylesheets().addAll(getStylesheets());
+                result.setRootMenu(_rootMenu);
+                stage.setScene(new Scene(result, 800, 600));
+            }
+        });
+
+
 
         Button btn = new Button("Answer");
         btn.getStylesheets().addAll(getStylesheets());
@@ -52,12 +69,8 @@ public class QuestionMenu extends SubMenu{
                     return;
                 }
 
-                ResultMenu result;
-                if(logic.answer(category, question, userAns)){
-                    result = new ResultMenu(stage, color, true ,logic, category, question);
-                }else{
-                    result = new ResultMenu(stage, color, false ,logic, category, question);
-                }
+                ResultMenu result = resultMenu(stage, userAns);
+
                 result.getStylesheets().addAll(getStylesheets());
                 result.setRootMenu(_rootMenu);
                 stage.setScene(new Scene(result, 800, 600));
@@ -76,6 +89,15 @@ public class QuestionMenu extends SubMenu{
 
     public void setTitleMenu(TitleMenu titleMenu){
         _titleMenu = titleMenu;
+    }
+
+    private ResultMenu resultMenu(Stage stage, String userAns){
+        if(_logic.answer(_category, _question, userAns)){
+            return new ResultMenu(stage, _color, true ,_logic, _category, _question);
+        }else{
+            return new ResultMenu(stage, _color, false ,_logic, _category, _question);
+        }
+
     }
 
     private void getFont(){
