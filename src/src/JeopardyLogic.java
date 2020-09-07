@@ -112,6 +112,16 @@ public class JeopardyLogic {
         return _isAnswered[category][question];
     }
 
+    public boolean isCompleted(int category){
+        for(int i = 0; i < _numOfQuestions; i++){
+            if(_isAnswered[category][i] == false){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public int numberOfCategories(){
         return _numOfCategories;
     }

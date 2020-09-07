@@ -120,6 +120,19 @@ public class QuestionBoard extends GridPane implements Observer{
                     _buttons[i][j].setText(_scores[j]+"");
                 }
             }
+
+            if(_logic.isCompleted(i)){
+                for(int j = 0; j < _scores.length; j++){
+                    _buttons[i][j].setText("Completed!!!");
+
+                    _buttons[i][j].setStyle("-fx-background-color: khaki;" +
+                            "-fx-border-color: black;");
+                }
+            }else {
+                for(int j = 0; j < _scores.length; j++){
+                    _buttons[i][j].setStyle("-fx-border-color: black;");
+                }
+            }
         }
     }
 }
