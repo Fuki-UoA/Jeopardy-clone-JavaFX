@@ -11,3 +11,8 @@ $ sudo apt-get install festival
 $ chmod -x Jeopardy.sh
 $ ./Jeopardy.sh
 ```
+## Screenshots
+### Main title menu
+![alt text](https://github.com/Fuki-UoA/Jeopardy-clone-JavaFX/blob/master/src/screenshots/Screenshot%20from%202020-09-25%2000-12-00.png) <br>
+### Answer screen
+![alt text](https://github.com/Fuki-UoA/Jeopardy-clone-JavaFX/blob/master/src/screenshots/Screenshot%20from%202020-09-25%2000-12-15.png)
